@@ -6,4 +6,6 @@ router.put("/:id", controller.UpdateRequest)
 router.get("/active", controller.getActiveRequests)
 router.get("/completed", controller.getCompletedRequests)
 router.get("/:id", controller.getSingleRequest)
+router.delete("/:id", controller.deleteRequest)
+
 module.exports = router

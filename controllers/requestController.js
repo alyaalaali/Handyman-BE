@@ -65,7 +65,19 @@ const getSingleRequest = async (req, res) => {
   }
 } //  works
 
+const deleteRequest = async (req, res) => {
+  try {
+    const { id } = req.params
+    const request = await Request.findByIdAndDelete(id)
+
+    res.send("deleted request!")
+  } catch (error) {
+    console.log(error)
+  }
+} // works, might need to add security measure for this to deny unauthorized access
+
 module.exports = {
+  deleteRequest,
   CreateRequest,
   UpdateRequest,
   getCompletedRequests,
