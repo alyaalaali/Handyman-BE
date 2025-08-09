@@ -6,6 +6,7 @@ const path = require("path")
 const cors = require("cors")
 const userRouter = require("./routes/userRouter")
 const requestRouter = require("./routes/requestRouter")
+const reviewRouter = require("./routes/reviewRouter")
 // Initialize app
 const app = express()
 
@@ -35,6 +36,7 @@ app.get("/", (req, res) => {
 // use Routers
 app.use("/user", userRouter)
 app.use("/request", requestRouter)
+app.use("/review", reviewRouter)
 
 // Listener
 app.listen(port, () => {
