@@ -4,7 +4,8 @@ require("dotenv").config()
 const session = require("express-session")
 const path = require("path")
 const cors = require("cors")
-
+const userRouter = require("./routes/userRouter")
+const requestRouter = require("./routes/requestRouter")
 // Initialize app
 const app = express()
 
@@ -25,16 +26,15 @@ app.use(morgan("dev"))
 app.use(express.static(path.join(__dirname, "public")))
 app.use(cors())
 app.use(express.json())
-app.use(logger("dev"))
 
 // Root Route
 app.get("/", (req, res) => {
   res.send("Your app is connected . . . ")
 })
 
-// Require Routers
-
 // use Routers
+app.use("/user", userRouter)
+app.use("/request", requestRouter)
 
 // Listener
 app.listen(port, () => {
