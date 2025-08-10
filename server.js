@@ -18,17 +18,16 @@ const db = require('./db')
 const port = process.env.PORT ? process.env.PORT : 3000
 
 // Require MiddleWares
-const morgan = require('morgan')
+const logger = require('morgan')
 
 // Require passUserToView & isSignedIn middlewares
 
 // use MiddleWares
 app.use(express.urlencoded({ extended: true }))
-app.use(morgan('dev'))
+app.use(logger('dev'))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(cors())
 app.use(express.json())
-app.use('/auth', AuthRouter)
 
 // Root Route
 app.get('/', (req, res) => {
@@ -36,6 +35,7 @@ app.get('/', (req, res) => {
 })
 
 // use Routers
+app.use('/auth', AuthRouter)
 app.use('/user', userRouter)
 app.use('/request', requestRouter)
 app.use('/review', reviewRouter)
