@@ -4,7 +4,7 @@ const { Schema } = require('mongoose')
 const providerSchema = new Schema(
   {
     CPR: { type: Number, required: true, unique: true },
-    name: { type: String, required: true },
+    name: { type: String, required: false },
 
     email: { type: String, required: true, unique: true },
     passwordDigest: { type: String },
