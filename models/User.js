@@ -7,7 +7,8 @@ const userSchema = new Schema(
     email: { type: String, required: true, unique: true },
     passwordDigest: { type: String },
     location: { type: String, required: true },
-    Contact: { type: Number, required: true }
+    contact: { type: Number, required: true },
+    type: { type: String, default: 'user' }
   },
   { timestamps: true }
 )

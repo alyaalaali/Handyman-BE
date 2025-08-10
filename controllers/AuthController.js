@@ -1,11 +1,11 @@
-const { User } = require('../models/User')
-const { Provider } = require('../models/Provider')
+const User = require('../models/User')
+const Provider = require('../models/Provider')
 const middleware = require('../middleware')
 
 // User Registration
 const RegisterUser = async (req, res) => {
   try {
-    const { name, email, password, location, Contact } = req.body
+    const { name, email, password, location, contact } = req.body
     let passwordDigest = await middleware.hashPassword(password)
 
     let existingUser = await User.findOne({ email })
@@ -19,7 +19,7 @@ const RegisterUser = async (req, res) => {
         email,
         passwordDigest,
         location,
-        Contact
+        contact
       })
       res.send(user)
     }
@@ -37,7 +37,7 @@ const RegisterProvider = async (req, res) => {
       email,
       password,
       location,
-      Contact,
+      contact,
       profession,
       categories
     } = req.body
@@ -55,7 +55,7 @@ const RegisterProvider = async (req, res) => {
         email,
         passwordDigest,
         location,
-        Contact,
+        contact,
         profession,
         categories
       })
