@@ -108,9 +108,14 @@ const Login = async (req, res) => {
       .send({ status: 'Error', msg: 'An error has occurred when logging in!' })
   }
 }
+const CheckSession = async (req, res) => {
+  const { payload } = res.locals
+  res.status(200).send(payload)
+}
 
 module.exports = {
   RegisterUser,
   RegisterProvider,
-  Login
+  Login,
+  CheckSession
 }
