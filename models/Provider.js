@@ -1,29 +1,29 @@
-const mongoose = require("mongoose")
-const { Schema } = require("mongoose")
+const mongoose = require('mongoose')
+const { Schema } = require('mongoose')
 
 const providerSchema = new Schema(
   {
     CPR: { type: Number, required: true, unique: true },
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
+    name: { type: String, required: true },
+
     email: { type: String, required: true, unique: true },
     passwordDigest: { type: String },
     location: { type: String, required: true },
-    Contact: { type: Number, required: true },
+    contact: { type: Number, required: true },
     profession: { type: String, required: true },
     categories: {
       type: [
         {
           type: String,
-          required: true,
-          enum: ["plumbing", "electrical", "carpentry", "painting", "cleaning"],
-        },
+          required: true
+        }
       ],
-      default: [],
+      default: []
     },
+    type: { type: String, default: 'provider' }
   },
 
   { timestamps: true }
 )
 
-module.exports = mongoose.model("Provider", providerSchema)
+module.exports = mongoose.model('Provider', providerSchema)
