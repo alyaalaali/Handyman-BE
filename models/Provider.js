@@ -1,11 +1,10 @@
-const mongoose = require('mongoose')
-const { Schema } = require('mongoose')
+const mongoose = require("mongoose")
+const { Schema } = require("mongoose")
 
 const providerSchema = new Schema(
   {
     CPR: { type: Number, required: true, unique: true },
-    name: { type: String, required: true },
-
+    name: { type: String, required: false },
     email: { type: String, required: true, unique: true },
     passwordDigest: { type: String },
     location: { type: String, required: true },
@@ -15,15 +14,15 @@ const providerSchema = new Schema(
       type: [
         {
           type: String,
-          required: true
-        }
+          required: true,
+        },
       ],
-      default: []
+      default: [],
     },
-    type: { type: String, default: 'provider' }
+    type: { type: String, default: "provider" },
   },
 
   { timestamps: true }
 )
 
-module.exports = mongoose.model('Provider', providerSchema)
+module.exports = mongoose.model("Provider", providerSchema)

@@ -18,8 +18,14 @@ const UpdateRequest = async (req, res) => {
     const { id } = req.params
     const updates = req.body
 
-    const request = await Request.findByIdAndUpdate(id, updates)
-    const updatedRequest = await Request.findById(id)
+    const request = await Request.findOne({ _id: id, userId: req.user.id })
+    if (!request) {
+      return res.send("You are not authorized to update this request")
+    }
+
+    const updatedRequest = await Request.findByIdAndUpdate(id, updates, {
+      new: true,
+    })
 
     res.send(updatedRequest)
   } catch (error) {
@@ -29,7 +35,10 @@ const UpdateRequest = async (req, res) => {
 
 const getActiveRequests = async (req, res) => {
   try {
-    const requests = await Request.find({ status: "active" })
+    const requests = await Request.find({
+      status: "active",
+      userId: req.user.id,
+    })
       .populate("userId", "name email")
       .sort({ createdAt: -1 })
 
@@ -41,8 +50,11 @@ const getActiveRequests = async (req, res) => {
 
 const getCompletedRequests = async (req, res) => {
   try {
-    const requests = await Request.find({ status: "closed" })
-      .populate("userId", "firstName email")
+    const requests = await Request.find({
+      status: "closed",
+      userId: req.user.id,
+    })
+      .populate("userId", "name email")
       .populate("providerId", "firstName")
       .sort({ updatedAt: -1 })
     res.send(requests)
@@ -53,12 +65,14 @@ const getCompletedRequests = async (req, res) => {
 
 const getSingleRequest = async (req, res) => {
   try {
-    const request = await Request.findById(req.params.id).populate(
-      "userId",
-      "firstName email"
-    )
-    // .populate("providerId", "firstName email")
-    // .populate("appliedBy", "firstName email")
+    const request = await Request.findOne({
+      _id: req.params.id,
+      userId: req.user.id,
+    }).populate("userId", "name email")
+    if (!request) {
+      return res.send("Request not found or not authorized")
+    }
+
     res.send(request)
   } catch (error) {
     console.log(error)
@@ -68,8 +82,11 @@ const getSingleRequest = async (req, res) => {
 const deleteRequest = async (req, res) => {
   try {
     const { id } = req.params
-    const request = await Request.findByIdAndDelete(id)
-
+    const request = await Request.findOne({ _id: id, userId: req.user.id })
+    if (!request) {
+      return res.send("Not authorized to delete this request")
+    }
+    await Request.findByIdAndDelete(id)
     res.send("deleted request!")
   } catch (error) {
     console.log(error)
