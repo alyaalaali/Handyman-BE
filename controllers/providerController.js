@@ -157,6 +157,25 @@ const getProviderProfile = async (req, res) => {
   res.send(provider)
 }
 
+const updateProviderProfile = async (req, res) => {
+  const providerId = res.locals.payload.id
+  const { name, location, contact, profession, categories } = req.body
+
+  const updatedProvider = await Provider.findByIdAndUpdate(
+    providerId,
+    { name, location, contact, profession, categories },
+    { new: true }
+  ).select("name, location, contact, profession, categories")
+
+  res.send(updatedProvider)
+}
+
+const getOtherProviderProfile = async (req, res) => {
+  const provider = await Provider.findById(req.params.id).select(
+    "name profession categories location"
+  )
+  res.send(provider)
+}
 module.exports = {
   getProviderCategories,
   getRequestsByCategory,
@@ -165,4 +184,6 @@ module.exports = {
   withdrawApplication,
   getAppliedRequests,
   getProviderProfile,
+  updateProviderProfile,
+  getOtherProviderProfile,
 }

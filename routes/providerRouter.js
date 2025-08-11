@@ -44,10 +44,22 @@ router.delete(
   controller.withdrawApplication
 )
 router.get(
-  "/profile/:id",
+  "/profile/me",
   middleware.stripToken,
   middleware.verifyToken,
   controller.getProviderProfile
 )
+router.put(
+  "/profile/me",
+  middleware.stripToken,
+  middleware.verifyToken,
+  controller.updateProviderProfile
+)
 
+router.get(
+  "/profile/:id",
+  middleware.stripToken,
+  middleware.verifyToken,
+  controller.getOtherProviderProfile
+)
 module.exports = router
