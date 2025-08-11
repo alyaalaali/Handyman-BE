@@ -8,10 +8,35 @@ router.post(
   middleware.verifyToken,
   controller.CreateRequest
 )
-router.put("/:id", controller.UpdateRequest)
-router.get("/active", controller.getActiveRequests)
-router.get("/completed", controller.getCompletedRequests)
-router.get("/:id", controller.getSingleRequest)
-router.delete("/:id", controller.deleteRequest)
+router.put(
+  "/:id",
+  middleware.stripToken,
+  middleware.verifyToken,
+  controller.UpdateRequest
+)
+router.get(
+  "/active",
+  middleware.stripToken,
+  middleware.verifyToken,
+  controller.getActiveRequests
+)
+router.get(
+  "/completed",
+  middleware.stripToken,
+  middleware.verifyToken,
+  controller.getCompletedRequests
+)
+router.get(
+  "/:id",
+  middleware.stripToken,
+  middleware.verifyToken,
+  controller.getSingleRequest
+)
+router.delete(
+  "/:id",
+  middleware.stripToken,
+  middleware.verifyToken,
+  controller.deleteRequest
+)
 
 module.exports = router

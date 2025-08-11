@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const { Schema } = require('mongoose')
+const mongoose = require("mongoose")
+const { Schema } = require("mongoose")
 
 const userSchema = new Schema(
   {
@@ -8,9 +8,9 @@ const userSchema = new Schema(
     passwordDigest: { type: String },
     location: { type: String, required: true },
     contact: { type: Number, required: true },
-    type: { type: String, default: 'user' }
+    type: { type: String, default: "user" },
   },
   { timestamps: true }
 )
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model("User", userSchema)
