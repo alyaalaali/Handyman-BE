@@ -2,8 +2,8 @@ const Request = require("../models/Request")
 
 const CreateRequest = async (req, res) => {
   try {
-        const userId = res.locals.payload.id
-        const { title, description, categories, location } = req.body
+    const userId = res.locals.payload.id
+    const { title, description, categories, location } = req.body
     const request = await Request.create({
       ...req.body,
       status: "active",
@@ -54,11 +54,11 @@ const getActiveRequests = async (req, res) => {
 const getCompletedRequests = async (req, res) => {
   try {
     const requests = await Request.find({
-      status: "completed",
+      status: "closed",
       userId: res.locals.payload.id,
     })
-      .populate("userId", "firstName email")
-      .populate("providerId", "firstName")
+      .populate("userId", "name email")
+      .populate("providerId", "name")
       .sort({ updatedAt: -1 })
     res.send(requests)
   } catch (error) {
@@ -100,9 +100,6 @@ const deleteRequest = async (req, res) => {
   }
 } // works, might need to add security measure for this to deny unauthorized access
 
-
-
-
 module.exports = {
   deleteRequest,
   CreateRequest,
@@ -110,5 +107,4 @@ module.exports = {
   getCompletedRequests,
   getActiveRequests,
   getSingleRequest,
-  
 }
