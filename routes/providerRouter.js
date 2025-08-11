@@ -1,18 +1,26 @@
-const express = require('express');
-const router = express.Router();
-const controller = require('../controllers/providerController');
-const middleware = require('../middleware');
+const router = require("express").Router()
+const controller = require("../controllers/providerController")
+const middleware = require("../middleware/index")
 
-// Protected routes (require valid JWT)
-router.use(middleware.verifyToken);
+router.get(
+  "/categories",
+  middleware.stripToken,
+  middleware.verifyToken,
+  controller.getProviderCategories
+)
 
+router.get(
+  "/categories/requests",
+  middleware.stripToken,
+  middleware.verifyToken,
+  controller.getRequestsByCategory
+)
 
-router.get('/categories', controller.listCategories);
+router.get(
+  "/requests/:id",
+  middleware.stripToken,
+  middleware.verifyToken,
+  controller.getRequestDetails
+)
 
-
-router.get('/categories/:category/requests', controller.getRequestsByCategory);
-
-
-router.get('/requests/:id', controller.getRequestDetails);
-
-module.exports = router;
+module.exports = router

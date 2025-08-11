@@ -1,55 +1,80 @@
-const Request = require('../models/Request');
+const Request = require('../models/Request')
+const Provider = require('../models/Provider')
 
-// 1. List all available categories
-const listCategories = async (req, res) => {
+
+const getProviderCategories = async (req, res) => {
   try {
-    // Get unique categories from all requests
-    const categories = await Request.distinct('category');
-    res.json(categories);
-  } catch (error) {
-    console.error('Categories error:', error);
-    res.status(500).json({ error: 'Failed to fetch categories' });
-  }
-};
+    const providerId = res.locals.payload.id
+    const provider = await Provider.findById(providerId)
 
-// 2. Get requests by category
-const getRequestsByCategory = async (req, res) => {
-  try {
-    const { category } = req.params;
-    const requests = await Request.find({ 
-      category,
-      status: 'active' // Only show active requests
-    })
-      .populate('userId', 'name email') // Client info
-      .sort({ createdAt: -1 }); // Newest first
-
-    res.json(requests);
-  } catch (error) {
-    console.error('Category requests error:', error);
-    res.status(500).json({ error: 'Failed to fetch requests' });
-  }
-};
-
-// 3. Get single request details
-const getRequestDetails = async (req, res) => {
-  try {
-    const request = await Request.findById(req.params.id)
-      .populate('userId', 'name email contact') // Client details
-      .populate('appliedBy', 'name profession'); // Providers who applied
-
-    if (!request) {
-      return res.status(404).json({ error: 'Request not found' });
+    if (!provider) {
+      return res.status(404).send({ message: 'Provider not found' })
     }
 
-    res.json(request);
+    res.send(provider.categories) 
   } catch (error) {
-    console.error('Request details error:', error);
-    res.status(500).json({ error: 'Failed to fetch request' });
+    console.error(error)
+    res.status(500).send({ message: 'Error fetching provider categories' })
   }
-};
+}
+
+
+const getRequestsByCategory = async (req, res) => {
+  try {
+    const providerId = res.locals.payload.id
+    const category = req.query.category
+
+    if (!category) {
+      return res.status(400).send({ message: 'Category query parameter is required' })
+    }
+
+    const provider = await Provider.findById(providerId)
+    if (!provider) {
+      return res.status(404).send({ message: 'Provider not found' })
+    }
+
+    // Check if provider actually has this category
+    if (!provider.categories.includes(category)) {
+      return res.status(403).send({ message: 'Unauthorized for this category' })
+    }
+
+    // Find active requests in this category
+    const requests = await Request.find({
+      status: 'active',
+      categories: category
+    })
+      .populate('userId', 'name email')
+      .sort({ createdAt: -1 })
+
+    res.send(requests)
+  } catch (error) {
+    console.error(error)
+    res.status(500).send({ message: 'Error fetching requests for category' })
+  }
+}
+
+
+
+const getRequestDetails = async (req, res) => {
+  try {
+    const { id } = req.params
+
+    const request = await Request.findById(id)
+      .populate('userId', 'name email')
+
+    if (!request) {
+      return res.status(404).send({ message: 'Request not found' })
+    }
+
+    res.send(request)
+  } catch (error) {
+    console.error(error)
+    res.status(500).send({ message: 'Error fetching request details' })
+  }
+}
 
 module.exports = {
-  listCategories,
+  getProviderCategories,
   getRequestsByCategory,
   getRequestDetails
-};
+}

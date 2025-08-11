@@ -1,6 +1,6 @@
+require('dotenv').config()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-require('dotenv').config()
 
 const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS)
 const APP_SECRET = process.env.APP_SECRET
@@ -30,6 +30,8 @@ const createToken = (payload) => {
 
 const stripToken = (req, res, next) => {
   try {
+    console.log('Strip Token')
+    console.log(req.headers['authorization'].split(' ')[1])
     const token = req.headers['authorization'].split(' ')[1]
     // Gets the token from the request headers {authorization: Bearer Some-Token}
     // Splits the value of the authorization header
@@ -49,6 +51,8 @@ const verifyToken = (req, res, next) => {
   const { token } = res.locals
   // Gets the token stored in the request lifecycle state
   try {
+    console.log('Verify Token')
+
     let payload = jwt.verify(token, APP_SECRET)
     // Verifies the token is legit
     if (payload) {
