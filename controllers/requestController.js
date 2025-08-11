@@ -6,7 +6,9 @@ const CreateRequest = async (req, res) => {
       ...req.body,
       status: "active",
       appliedBy: [],
+      userId: res.locals.payload.id,
     })
+    console.log("Request: ", request)
     res.send(request)
   } catch (error) {
     console.log(error)
