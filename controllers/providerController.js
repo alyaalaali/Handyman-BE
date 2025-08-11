@@ -57,7 +57,7 @@ const getRequestDetails = async (req, res) => {
   try {
     const { id } = req.params
 
-    const request = await Request.findById(id).populate('userId', 'name email')
+    const request = await Request.findById(id).populate('userId', 'email')
 
     if (!request) {
       return res.status(404).send({ message: 'Request not found' })
@@ -98,10 +98,42 @@ const applyToRequest = async (req, res) => {
   }
 }
 
+const withdrawApplication = async (req, res) => {
+  try {
+    const providerId = res.locals.payload.id
+    const { requestId } = req.params
+
+    const request = await Request.findById(requestId)
+
+    if (!request) {
+      return res.status(404).send({ message: 'Request not found' })
+    }
+
+    // Check if provider has applied
+    if (!request.appliedBy.includes(providerId)) {
+      return res.status(400).send({ message: 'You have not applied to this request' })
+    }
+
+    // Remove provider from appliedBy array
+    request.appliedBy = request.appliedBy.filter(
+      (id) => id.toString() !== providerId
+    )
+
+    await request.save()
+
+    res.send({ message: 'Application withdrawn successfully', request })
+  } catch (error) {
+    console.error(error)
+    res.status(500).send({ message: 'Error withdrawing application' })
+  }
+}
+
+
 
 module.exports = {
   getProviderCategories,
   getRequestsByCategory,
   getRequestDetails,
-  applyToRequest
+  applyToRequest,
+  withdrawApplication
 }

@@ -30,5 +30,13 @@ router.post(
   controller.applyToRequest
 )
 
+router.delete(
+  '/requests/:requestId/apply',
+  middleware.stripToken,
+  middleware.verifyToken,
+  controller.withdrawApplication
+)
+
+
 
 module.exports = router
