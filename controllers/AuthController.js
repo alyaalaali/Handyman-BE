@@ -73,12 +73,12 @@ const Login = async (req, res) => {
 
     // Try User collection first
     let user = await User.findOne({ email })
-    let userType = 'user'
+    let type = 'user'
 
     // If not found in User, try Provider
     if (!user) {
       user = await Provider.findOne({ email })
-      userType = 'provider'
+      type = 'provider'
     }
 
     if (!user) {
@@ -95,7 +95,7 @@ const Login = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
-        userType: userType
+        userType: user.type
       }
       let token = middleware.createToken(payload)
       return res.send({ user: payload, token })
