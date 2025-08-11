@@ -30,9 +30,7 @@ const createToken = (payload) => {
 
 const stripToken = (req, res, next) => {
   try {
-    console.log('Strip Token')
-    console.log(req.headers['authorization'].split(' ')[1])
-    const token = req.headers['authorization'].split(' ')[1]
+    const token = req.headers["authorization"].split(" ")[1]
     // Gets the token from the request headers {authorization: Bearer Some-Token}
     // Splits the value of the authorization header
     if (token) {
@@ -57,7 +55,11 @@ const verifyToken = (req, res, next) => {
     // Verifies the token is legit
     if (payload) {
       res.locals.payload = payload // Passes the decoded payload to the next function
-      // Calls the next function if the token is valid
+      req.user = {
+        id: payload.id,
+        email: payload.email,
+        userType: payload.userType,
+      }
       return next()
     }
     res.status(401).send({ status: 'Error', msg: 'Unauthorized' })

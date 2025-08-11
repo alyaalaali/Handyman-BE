@@ -23,4 +23,12 @@ router.get(
   controller.getRequestDetails
 )
 
+router.post(
+  '/requests/:requestId/apply',
+  middleware.stripToken,
+  middleware.verifyToken,
+  controller.applyToRequest
+)
+
+
 module.exports = router
