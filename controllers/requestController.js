@@ -54,7 +54,7 @@ const getActiveRequests = async (req, res) => {
 const getCompletedRequests = async (req, res) => {
   try {
     const requests = await Request.find({
-      status: "closed",
+      status: "completed",
       userId: res.locals.payload.id,
     })
       .populate("userId", "firstName email")
