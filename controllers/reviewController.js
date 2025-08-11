@@ -3,12 +3,13 @@ const Request = require("../models/Request")
 
 const createReview = async (req, res) => {
   try {
-    const { Rating, description, requestId } = req.body
+    const { Rating, description, requestId, userId } = req.body
     // needs to get the userID from token
     const review = await Review.create({
       Rating,
       description,
       requestId,
+      userId
     })
     res.send(review)
   } catch (error) {
