@@ -4,7 +4,7 @@ const Request = require("../models/Request")
 const createReview = async (req, res) => {
   try {
     const { Rating, description, requestId } = req.body
-    // needs to get the userID from JWT
+    // needs to get the userID from token
     const review = await Review.create({
       Rating,
       description,

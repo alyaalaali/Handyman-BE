@@ -6,7 +6,6 @@ const requestSchema = new Schema(
     title: { type: String, required: true },
     category: {
       type: String,
-      enum: ["plumbing", "electrical", "carpentry", "painting", "cleaning"],
       required: true,
     },
     description: { type: String, required: true },
