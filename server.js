@@ -8,6 +8,7 @@ const userRouter = require('./routes/userRouter')
 const AuthRouter = require('./routes/AuthRouter')
 const requestRouter = require('./routes/requestRouter')
 const reviewRouter = require('./routes/reviewRouter')
+const providerRouter = require('./routes/providerRouter')
 // Initialize app
 const app = express()
 
@@ -39,6 +40,7 @@ app.use('/auth', AuthRouter)
 app.use('/user', userRouter)
 app.use('/request', requestRouter)
 app.use('/review', reviewRouter)
+app.use('/provider', providerRouter)
 
 // Listener
 app.listen(port, () => {
