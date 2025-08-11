@@ -55,26 +55,3 @@ const getRequestsByCategory = async (req, res) => {
 
 
 
-const getRequestDetails = async (req, res) => {
-  try {
-    const { id } = req.params
-
-    const request = await Request.findById(id)
-      .populate('userId', 'name email')
-
-    if (!request) {
-      return res.status(404).send({ message: 'Request not found' })
-    }
-
-    res.send(request)
-  } catch (error) {
-    console.error(error)
-    res.status(500).send({ message: 'Error fetching request details' })
-  }
-}
-
-module.exports = {
-  getProviderCategories,
-  getRequestsByCategory,
-  getRequestDetails
-}
