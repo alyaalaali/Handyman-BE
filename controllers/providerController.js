@@ -81,6 +81,12 @@ const applyToRequest = async (req, res) => {
       return res.status(404).send({ message: "Request not found" })
     }
 
+    if (request.status !== "active") {
+      return res.send({ message: "request is closed" })
+    }
+    if (request.providerId) {
+      return res.send({ message: "a provider was already selected" })
+    }
     // Prevent duplicate applications
     if (request.appliedBy.includes(providerId)) {
       return res
@@ -131,22 +137,16 @@ const withdrawApplication = async (req, res) => {
 }
 
 const getAppliedRequests = async (req, res) => {
-  try {
-    console.log("here")
-    const providerId = res.locals.payload.id
-    console.log(providerId)
-    const requests = await Request.find({
-      appliedBy: providerId,
-      status: "active",
-    })
-      .populate("userId")
-      .sort({ updatedAt: -1 })
+  const providerId = res.locals.payload.id
+  const requests = await Request.find({
+    appliedBy: providerId,
+    status: "active",
+  })
+    .populate("userId", "name email location")
+    .populate("providerId", "name")
+    .sort({ updatedAt: -1 })
 
-    res.send(requests)
-  } catch (error) {
-    console.error(error)
-    res.status(500).send({ message: "Error fetching request details" })
-  }
+  res.send(requests)
 }
 
 const getProviderProfile = async (req, res) => {
@@ -176,6 +176,7 @@ const getOtherProviderProfile = async (req, res) => {
   )
   res.send(provider)
 }
+
 module.exports = {
   getProviderCategories,
   getRequestsByCategory,

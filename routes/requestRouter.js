@@ -9,6 +9,13 @@ router.post(
   controller.CreateRequest
 )
 router.put(
+  "/:requestId/accept/:providerId",
+  middleware.stripToken,
+  middleware.verifyToken,
+  controller.acceptProvider
+)
+
+router.put(
   "/:id",
   middleware.stripToken,
   middleware.verifyToken,
@@ -27,6 +34,12 @@ router.get(
   controller.getCompletedRequests
 )
 router.get(
+  "/:requestId/applicants",
+  middleware.stripToken,
+  middleware.verifyToken,
+  controller.getApplicants
+)
+router.get(
   "/:id",
   middleware.stripToken,
   middleware.verifyToken,
@@ -38,7 +51,5 @@ router.delete(
   middleware.verifyToken,
   controller.deleteRequest
 )
-
-
 
 module.exports = router
