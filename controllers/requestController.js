@@ -2,6 +2,8 @@ const Request = require("../models/Request")
 
 const CreateRequest = async (req, res) => {
   try {
+        const userId = res.locals.payload.id
+        const { title, description, categories, location } = req.body
     const request = await Request.create({
       ...req.body,
       status: "active",
@@ -98,6 +100,9 @@ const deleteRequest = async (req, res) => {
   }
 } // works, might need to add security measure for this to deny unauthorized access
 
+
+
+
 module.exports = {
   deleteRequest,
   CreateRequest,
@@ -105,4 +110,5 @@ module.exports = {
   getCompletedRequests,
   getActiveRequests,
   getSingleRequest,
+  
 }
