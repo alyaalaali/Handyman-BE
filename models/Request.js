@@ -13,7 +13,11 @@ const requestSchema = new Schema(
     status: { type: String, enum: ["active", "closed"] },
     appliedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    providerId: { type: mongoose.Schema.Types.ObjectId, ref: "Provider" },
+    providerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Provider",
+      default: null,
+    },
   },
   { timestamps: true }
 )

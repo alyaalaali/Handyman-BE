@@ -49,6 +49,8 @@ const verifyToken = (req, res, next) => {
   const { token } = res.locals
   // Gets the token stored in the request lifecycle state
   try {
+    console.log("Verify Token")
+
     let payload = jwt.verify(token, APP_SECRET)
     // Verifies the token is legit
     if (payload) {
