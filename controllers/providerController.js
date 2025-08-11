@@ -43,7 +43,7 @@ const getRequestsByCategory = async (req, res) => {
       status: 'active',
       category: category
     })
-      .populate('userId', 'name email')
+      .populate('userId', 'email')
       .sort({ createdAt: -1 })
 
     res.send(requests)
@@ -130,10 +130,39 @@ const withdrawApplication = async (req, res) => {
 
 
 
+const getAppliedRequests = async (req, res) => {
+  try {
+    console.log("here")
+    const providerId = res.locals.payload.id
+    console.log(providerId)
+    const requests = await Request.find({
+      appliedBy: providerId,
+      status: 'active'
+    })
+      .populate('userId')
+      .sort({ updatedAt: -1 })
+
+    res.send(requests)
+  } catch (error) {
+    console.error(error)
+    res.status(500).send({ message: 'Error fetching request details' })
+  }
+}
+
+
+
+
+
+
+
+
+
+
 module.exports = {
   getProviderCategories,
   getRequestsByCategory,
   getRequestDetails,
   applyToRequest,
-  withdrawApplication
+  withdrawApplication,
+  getAppliedRequests,
 }

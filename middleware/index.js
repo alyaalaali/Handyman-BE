@@ -52,6 +52,7 @@ const verifyToken = (req, res, next) => {
     console.log('Verify Token')
 
     let payload = jwt.verify(token, APP_SECRET)
+    console.log(payload)
     // Verifies the token is legit
     if (payload) {
       res.locals.payload = payload // Passes the decoded payload to the next function
@@ -60,7 +61,7 @@ const verifyToken = (req, res, next) => {
         email: payload.email,
         userType: payload.userType,
       }
-      return next()
+      return next() 
     }
     res.status(401).send({ status: 'Error', msg: 'Unauthorized' })
   } catch (error) {
