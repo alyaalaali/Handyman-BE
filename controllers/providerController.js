@@ -172,7 +172,7 @@ const updateProviderProfile = async (req, res) => {
 
 const getOtherProviderProfile = async (req, res) => {
   const provider = await Provider.findById(req.params.id).select(
-    "name profession categories location"
+    "name profession categories location contact"
   )
   res.send(provider)
 }
