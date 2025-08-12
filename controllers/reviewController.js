@@ -9,7 +9,7 @@ const createReview = async (req, res) => {
     const numberRating = parseInt(rating);
     // needs to get the userID from token
     const review = await Review.create({
-      Rating: numberRating,
+      rating: numberRating,
       description,
       requestId,
       userId,
@@ -19,6 +19,15 @@ const createReview = async (req, res) => {
     console.log(error);
   }
 };
+
+const getReview = async () => {
+  try {
+    const review = await Review.findOne({ requestId: req.params.id})
+  }
+  catch (error) {
+
+  }
+}
 
 const deleteReview = async (req, res) => {
   try {
@@ -31,4 +40,7 @@ const deleteReview = async (req, res) => {
     console.log(error);
   }
 };
-module.exports = { createReview, deleteReview };
+
+
+
+module.exports = { createReview, getReview, deleteReview };
