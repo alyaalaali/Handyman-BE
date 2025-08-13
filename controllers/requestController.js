@@ -10,10 +10,10 @@ const CreateRequest = async (req, res) => {
       appliedBy: [],
       userId: res.locals.payload.id,
     })
-    console.log("Request: ", request)
+   
     res.send(request)
   } catch (error) {
-    console.log(error)
+    
   }
 } //works
 
@@ -38,7 +38,7 @@ const UpdateRequest = async (req, res) => {
 
     res.send(updatedRequest)
   } catch (error) {
-    console.log(error)
+   
   }
 } // works
 
@@ -53,7 +53,7 @@ const getActiveRequests = async (req, res) => {
 
     res.send(requests)
   } catch (error) {
-    console.log(error)
+    
   }
 } //works
 
@@ -68,7 +68,7 @@ const getCompletedRequests = async (req, res) => {
       .sort({ updatedAt: -1 })
     res.send(requests)
   } catch (error) {
-    console.log(error)
+    
   }
 } // works
 
@@ -86,7 +86,7 @@ const getSingleRequest = async (req, res) => {
     }
     res.send(request)
   } catch (error) {
-    console.log(error)
+    
   }
 } //  works
 
@@ -103,7 +103,7 @@ const deleteRequest = async (req, res) => {
     await Request.findByIdAndDelete(id)
     res.send("deleted request!")
   } catch (error) {
-    console.log(error)
+   
   }
 } // works, might need to add security measure for this to deny unauthorized access
 

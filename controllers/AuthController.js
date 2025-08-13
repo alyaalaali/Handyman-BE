@@ -3,9 +3,10 @@ const Provider = require("../models/Provider")
 const middleware = require("../middleware")
 
 // User Registration
+
 const RegisterUser = async (req, res) => {
   try {
-    console.log(req.body)
+   
     const { name, email, password, location, contact } = req.body
     let passwordDigest = await middleware.hashPassword(password)
 
@@ -42,6 +43,7 @@ const RegisterProvider = async (req, res) => {
       profession,
       categories,
     } = req.body
+    
     let passwordDigest = await middleware.hashPassword(password)
 
     let existingProvider = await Provider.findOne({ email })
@@ -103,7 +105,7 @@ const Login = async (req, res) => {
     }
     res.status(401).send({ status: "Error", msg: "Unauthorized" })
   } catch (error) {
-    console.log(error)
+    
     res
       .status(401)
       .send({ status: "Error", msg: "An error has occurred when logging in!" })
