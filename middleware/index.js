@@ -40,7 +40,7 @@ const stripToken = (req, res, next) => {
     }
     res.status(401).send({ status: 'Error', msg: 'Unauthorized' })
   } catch (error) {
-    console.log(error)
+   
     res.status(401).send({ status: 'Error', msg: 'Strip Token Error!' })
   }
 }
@@ -49,10 +49,10 @@ const verifyToken = (req, res, next) => {
   const { token } = res.locals
   // Gets the token stored in the request lifecycle state
   try {
-    console.log('Verify Token')
+   
 
     let payload = jwt.verify(token, APP_SECRET)
-    console.log(payload)
+    
     // Verifies the token is legit
     if (payload) {
       res.locals.payload = payload // Passes the decoded payload to the next function
@@ -65,7 +65,7 @@ const verifyToken = (req, res, next) => {
     }
     res.status(401).send({ status: 'Error', msg: 'Unauthorized' })
   } catch (error) {
-    console.log(error)
+    
     res.status(401).send({ status: 'Error', msg: 'Verify Token Error!' })
   }
 }

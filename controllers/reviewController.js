@@ -17,7 +17,7 @@ const createReview = async (req, res) => {
     })
     res.send(review)
   } catch (error) {
-    console.log(error)
+   
   }
 }
 
@@ -29,7 +29,7 @@ const getReview = async (req, res) => {
     })
     res.send(review)
   } catch (error) {
-    console.log(error, "Can't get an review")
+    
   }
 }
 
@@ -41,7 +41,7 @@ const getAllReviews = async (req, res) => {
     const reviews = await Review.find({ providerId })
     res.send(reviews)
   } catch (error) {
-    console.log(error, "Error for getting the reviews")
+    
   }
 }
 
@@ -58,7 +58,7 @@ const deleteReview = async (req, res) => {
 
     res.send(deletedReview, "Review deleted successfully")
   } catch (error) {
-    console.log(error)
+    
   }
 }
 

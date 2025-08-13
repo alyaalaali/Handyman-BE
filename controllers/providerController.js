@@ -143,7 +143,7 @@ const getAppliedRequests = async (req, res) => {
     status: "active",
   })
     .populate("userId", "name email location")
-    .populate("providerId", "name")
+    .populate("providerId", "email")
     .sort({ updatedAt: -1 })
 
   res.send(requests)
