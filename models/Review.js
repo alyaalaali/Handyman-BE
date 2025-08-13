@@ -7,6 +7,11 @@ const reviewSchema = new Schema(
     description: { type: String, required: true },
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     requestId: { type: mongoose.Schema.Types.ObjectId, ref: "Request" },
+    providerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Provider",
+      required: true,
+    },
   },
   { timestamps: true }
 )
