@@ -20,14 +20,29 @@ const createReview = async (req, res) => {
   }
 };
 
-const getReview = async () => {
+const getReview = async (req, res) => {
   try {
-    const review = await Review.findOne({ requestId: req.params.id})
+    const review = await Review.find({ requestId: req.params.id})
+    res.send(review)
   }
   catch (error) {
-
+    console.log(error, "Can't get an review")
   }
 }
+
+// create GET request for all reviews for Provider
+const getAllReviews = async (req, res) => {
+  try {
+    const { providerId } = req.params
+
+  const reviews = await Review.find({ providerId })
+  res.send(reviews) 
+
+} catch (error) {
+  console.log(error, "Error for getting the reviews")
+}
+}
+
 
 const deleteReview = async (req, res) => {
   try {
@@ -35,7 +50,7 @@ const deleteReview = async (req, res) => {
     // needs user validation check
     const deletedReview = await Review.findByIdAndDelete(id);
 
-    res.send("Review deleted successfully");
+    res.send(deletedReview ,"Review deleted successfully");
   } catch (error) {
     console.log(error);
   }
@@ -43,4 +58,4 @@ const deleteReview = async (req, res) => {
 
 
 
-module.exports = { createReview, getReview, deleteReview };
+module.exports = { createReview, getReview, getAllReviews, deleteReview };
