@@ -62,4 +62,5 @@ router.get(
   middleware.verifyToken,
   controller.getOtherProviderProfile
 )
+
 module.exports = router

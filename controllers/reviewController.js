@@ -1,31 +1,34 @@
-const Review = require("../models/Review");
-const Request = require("../models/Request");
+const Review = require("../models/Review")
+const Request = require("../models/Request")
 
 const createReview = async (req, res) => {
   try {
-    console.log(req.body);
-    const { rating, description, requestId } = req.body;
-    const userId = res.locals.payload.id;
-    const numberRating = parseInt(rating);
-    // needs to get the userID from token
+    const { rating, description, requestId } = req.body
+    const userId = res.locals.payload.id
+    const numberRating = parseInt(rating)
+    const request = await Request.findById(requestId)
+
     const review = await Review.create({
       rating: numberRating,
       description,
       requestId,
       userId,
-    });
-    res.send(review);
+      providerId: request.providerId,
+    })
+    res.send(review)
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
-};
+}
 
 const getReview = async (req, res) => {
   try {
-    const review = await Review.find({ requestId: req.params.id})
+    const review = await Review.findOne({
+      requestId: req.params.requestId,
+      userId: req.params.userId,
+    })
     res.send(review)
-  }
-  catch (error) {
+  } catch (error) {
     console.log(error, "Can't get an review")
   }
 }
@@ -35,27 +38,28 @@ const getAllReviews = async (req, res) => {
   try {
     const { providerId } = req.params
 
-  const reviews = await Review.find({ providerId })
-  res.send(reviews) 
-
-} catch (error) {
-  console.log(error, "Error for getting the reviews")
+    const reviews = await Review.find({ providerId })
+    res.send(reviews)
+  } catch (error) {
+    console.log(error, "Error for getting the reviews")
+  }
 }
-}
-
 
 const deleteReview = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params
+    const userId = res.locals.payload.id
     // needs user validation check
-    const deletedReview = await Review.findByIdAndDelete(id);
+    const review = await Review.findById(id)
+    if (review.userId.toString() !== userId) {
+      return res.send("cant delete this review")
+    }
+    const deletedReview = await Review.findByIdAndDelete(id)
 
-    res.send(deletedReview ,"Review deleted successfully");
+    res.send(deletedReview, "Review deleted successfully")
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
-};
+}
 
-
-
-module.exports = { createReview, getReview, getAllReviews, deleteReview };
+module.exports = { createReview, getReview, getAllReviews, deleteReview }
