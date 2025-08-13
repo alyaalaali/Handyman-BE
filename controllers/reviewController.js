@@ -9,7 +9,7 @@ const createReview = async (req, res) => {
     const numberRating = parseInt(rating);
     // needs to get the userID from token
     const review = await Review.create({
-      Rating: numberRating,
+      rating: numberRating,
       description,
       requestId,
       userId,
@@ -20,15 +20,42 @@ const createReview = async (req, res) => {
   }
 };
 
+const getReview = async (req, res) => {
+  try {
+    const review = await Review.find({ requestId: req.params.id})
+    res.send(review)
+  }
+  catch (error) {
+    console.log(error, "Can't get an review")
+  }
+}
+
+// create GET request for all reviews for Provider
+const getAllReviews = async (req, res) => {
+  try {
+    const { providerId } = req.params
+
+  const reviews = await Review.find({ providerId })
+  res.send(reviews) 
+
+} catch (error) {
+  console.log(error, "Error for getting the reviews")
+}
+}
+
+
 const deleteReview = async (req, res) => {
   try {
     const { id } = req.params;
     // needs user validation check
     const deletedReview = await Review.findByIdAndDelete(id);
 
-    res.send("Review deleted successfully");
+    res.send(deletedReview ,"Review deleted successfully");
   } catch (error) {
     console.log(error);
   }
 };
-module.exports = { createReview, deleteReview };
+
+
+
+module.exports = { createReview, getReview, getAllReviews, deleteReview };
