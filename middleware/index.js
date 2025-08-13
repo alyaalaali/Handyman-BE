@@ -70,10 +70,31 @@ const verifyToken = (req, res, next) => {
   }
 }
 
+const validatePassword = (password) => {
+  console.log(password)
+  try {
+    const pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/
+    if (!pattern.test(password)) {
+      return {
+        valid: false,
+        msg: "Password must be at least 8 characters long and include uppercase letters, lowercase letters, and numbers."
+      }
+    }
+    return { valid: true }
+  } catch (error) {
+    return {
+      valid: false,
+      msg: "Password validation error!"
+    }
+  }
+}
+
+
 module.exports = {
   hashPassword,
   comparePassword,
   createToken,
   stripToken,
-  verifyToken
+  verifyToken,
+  validatePassword
 }
