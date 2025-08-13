@@ -38,7 +38,10 @@ const getAllReviews = async (req, res) => {
   try {
     const { providerId } = req.params
 
-    const reviews = await Review.find({ providerId })
+    const reviews = await Review.find({ providerId }).populate({
+      path: "requestId",
+      select: "category",
+    })
     res.send(reviews)
   } catch (error) {
     console.log(error, "Error for getting the reviews")
