@@ -16,9 +16,7 @@ const createReview = async (req, res) => {
       providerId: request.providerId,
     })
     res.send(review)
-  } catch (error) {
-   
-  }
+  } catch (error) {}
 }
 
 const getReview = async (req, res) => {
@@ -28,24 +26,20 @@ const getReview = async (req, res) => {
       userId: req.params.userId,
     })
     res.send(review)
-  } catch (error) {
-    
-  }
+  } catch (error) {}
 }
 
 // create GET request for all reviews for Provider
 const getAllReviews = async (req, res) => {
   try {
-    const { providerId } = req.params
+    const { id } = req.params
 
-    const reviews = await Review.find({ providerId }).populate({
+    const reviews = await Review.find({ providerId: id }).populate({
       path: "requestId",
       select: "category",
     })
     res.send(reviews)
-  } catch (error) {
-    
-  }
+  } catch (error) {}
 }
 
 const deleteReview = async (req, res) => {
@@ -60,9 +54,7 @@ const deleteReview = async (req, res) => {
     const deletedReview = await Review.findByIdAndDelete(id)
 
     res.send(deletedReview, "Review deleted successfully")
-  } catch (error) {
-    
-  }
+  } catch (error) {}
 }
 
 module.exports = { createReview, getReview, getAllReviews, deleteReview }

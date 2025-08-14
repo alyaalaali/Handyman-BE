@@ -3,7 +3,7 @@ const controller = require("../controllers/requestController")
 const middleware = require("../middleware/index")
 
 router.post(
-  "/new",
+  "/",
   middleware.stripToken,
   middleware.verifyToken,
   controller.CreateRequest
