@@ -3,7 +3,12 @@ const controller = require("../controllers/reviewController")
 const { stripToken, verifyToken } = require("../middleware/index")
 
 router.post("/", stripToken, verifyToken, controller.createReview)
-router.get("/user/:userId/request/:requestId", controller.getReview)
+router.get(
+  "/user/:userId/request/:requestId",
+  stripToken,
+  verifyToken,
+  controller.getReview
+)
 router.get("/:id", stripToken, verifyToken, controller.getAllReviews)
 
 router.delete("/:id", stripToken, verifyToken, controller.deleteReview)
